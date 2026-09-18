@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f3b67">
-<title>ติดตามงาน นท ไนท์</title>
+<title>ติดตามงาน นท ไนท์ • V3.2</title>
 <style>
 :root{--navy:#0f3b67;--blue:#1769e0;--green:#18a673;--orange:#f59e0b;--red:#e5484d;--purple:#7c4dff;--bg:#f3f6fa;--card:#fff;--text:#172033;--muted:#667085;--line:#e2e8f0}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text)}
@@ -25,7 +25,7 @@ form,.panel{background:white;border:1px solid var(--line);border-radius:20px;pad
 <body>
 <div class="app">
 <header>
- <div class="brand"><div><h1>🎓 ติดตามงาน นท ไนท์</h1><small>School Task Tracker • V3</small></div><div style="font-size:28px">📚</div></div>
+ <div class="brand"><div><h1>🎓 ติดตามงาน นท ไนท์</h1><small>School Task Tracker • V3.2</small></div><div style="font-size:28px">📚</div></div>
  <div class="child">
    <div><span>👨‍🎓 นักเรียน</span><small id="studentClass" style="display:block;opacity:.8;margin-top:2px"></small></div>
    <select id="studentSelect" style="background:rgba(255,255,255,.14);color:white;border:1px solid rgba(255,255,255,.3);border-radius:10px;padding:8px 10px;font-weight:800">
@@ -53,8 +53,18 @@ form,.panel{background:white;border:1px solid var(--line);border-radius:20px;pad
 </section>
 
 <section id="subjects" class="hidden">
- <div class="section-title"><h2>📚 รายวิชา</h2><span class="muted">กดวิชาเพื่อดูงาน</span></div>
+ <div class="section-title"><h2>📚 รายวิชา</h2><button type="button" class="small" id="addSubjectBtn">＋ เพิ่มรายวิชา</button></div>
  <div id="subjectsList" class="subject-grid"></div><div id="subjectTasks"></div>
+ <div id="addSubjectBox" class="panel hidden" style="margin-top:10px">
+  <h3 style="margin-top:0">➕ เพิ่มรายวิชาใหม่</h3>
+  <form id="subjectForm">
+   <div class="field"><label>ชื่อรายวิชา *</label><input id="newSubjectInput" maxlength="60" required placeholder="เช่น ดนตรี / พลศึกษา"></div>
+   <div class="two">
+    <button type="submit" class="save">💾 บันทึกรายวิชา</button>
+    <button type="button" class="small" id="cancelSubjectBtn">ยกเลิก</button>
+   </div>
+  </form>
+ </div>
 </section>
 
 <section id="calendar" class="hidden">
@@ -125,7 +135,9 @@ form,.panel{background:white;border:1px solid var(--line);border-radius:20px;pad
 <script>
 (function(){
 const KEY='school_task_nt_night_v2';
-const subjects=['คณิตศาสตร์','ภาษาไทย','ภาษาอังกฤษ','วิทยาศาสตร์','ภาษาจีน','สังคมศึกษา','ศิลปะ','สุขศึกษา','การงานอาชีพ','คอมพิวเตอร์'];
+const defaultSubjects=['คณิตศาสตร์','ภาษาไทย','ภาษาอังกฤษ','วิทยาศาสตร์','ภาษาจีน','สังคมศึกษา','ศิลปะ','สุขศึกษา','การงานอาชีพ','คอมพิวเตอร์'];
+let subjects=[];try{subjects=JSON.parse(localStorage.getItem(KEY+'_subjects'))||defaultSubjects}catch(e){subjects=defaultSubjects.slice()}
+if(!Array.isArray(subjects)||!subjects.length)subjects=defaultSubjects.slice();
 const icons={'คณิตศาสตร์':'🔢','ภาษาไทย':'📖','ภาษาอังกฤษ':'🔤','วิทยาศาสตร์':'🧪','ภาษาจีน':'中','สังคมศึกษา':'🌏','ศิลปะ':'🎨','สุขศึกษา':'❤️','การงานอาชีพ':'🛠️','คอมพิวเตอร์':'💻'};
 const sample=[
 {id:1,subject:'วิทยาศาสตร์',name:'รายงานระบบสุริยะ',due:'2026-09-18',done:false,priority:'high',detail:'จัดทำรายงานและเตรียมนำเสนอ',remind:1},
@@ -153,6 +165,18 @@ const daysLeft=s=>Math.round((dateObj(s)-today())/86400000);
 const fmt=s=>{let [y,m,d]=s.split('-');return `${d}/${m}/${y}`};
 const esc=x=>String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function save(){try{localStorage.setItem(KEY,JSON.stringify(tasks))}catch(e){}}
+
+function saveSubjects(){try{localStorage.setItem(KEY+'_subjects',JSON.stringify(subjects))}catch(e){}}
+function refreshSubjectSelects(){
+ const ids=['subjectInput','classSubjectInput'];
+ ids.forEach(id=>{
+  const sel=document.getElementById(id); if(!sel)return;
+  const old=sel.value; sel.innerHTML='';
+  subjects.forEach(s=>{let o=document.createElement('option');o.value=s;o.textContent=s;sel.appendChild(o)});
+  if(subjects.includes(old))sel.value=old;
+ });
+}
+
 function status(t){if(t.done)return ['เสร็จแล้ว','var(--green)'];let n=daysLeft(t.due);if(n<0)return [`เกินกำหนด ${Math.abs(n)} วัน`,'var(--red)'];if(n===0)return ['ต้องส่งวันนี้','var(--red)'];if(n===1)return ['เหลือ 1 วัน','var(--orange)'];if(n<=3)return [`เหลือ ${n} วัน`,'var(--orange)'];return [`เหลือ ${n} วัน`,'var(--blue)']}
 function priority(p){let map={high:['สำคัญมาก','high'],normal:['ปกติ','normal'],low:['ไม่เร่งด่วน','low']};return map[p]||map.normal}
 function taskHTML(t){
@@ -179,12 +203,32 @@ function show(page){document.querySelectorAll('main section').forEach(s=>s.class
 function toast(msg){let x=document.getElementById('toast');x.textContent=msg;x.style.display='block';clearTimeout(window.__toast);window.__toast=setTimeout(()=>x.style.display='none',2000)}
 function startEdit(id){let t=tasks.find(x=>x.id==id&&x.student===selectedStudent);if(!t)return;editingId=t.id;document.getElementById('subjectInput').value=t.subject;document.getElementById('nameInput').value=t.name;document.getElementById('dueInput').value=t.due;document.getElementById('priorityInput').value=t.priority||'normal';document.getElementById('detailInput').value=t.detail||'';document.getElementById('remindInput').value=String(t.remind??3);document.getElementById('formTitle').textContent='✏️ แก้ไขงาน';document.getElementById('cancelEdit').classList.remove('hidden');show('add')}
 function resetForm(){editingId=null;document.getElementById('form').reset();
-document.querySelectorAll('#classSubjectInput option').forEach(o=>o.remove());subjects.forEach(s=>{let o=document.createElement('option');o.value=s;o.textContent=s;document.getElementById('classSubjectInput').appendChild(o)});
+refreshSubjectSelects();
 document.getElementById('dayFilter').addEventListener('click',e=>{let b=e.target.closest('[data-day]');if(!b)return;selectedDay=b.dataset.day;document.querySelectorAll('#dayFilter button').forEach(x=>x.classList.toggle('sel',x===b));renderSchedule()});
 document.getElementById('scheduleForm').addEventListener('submit',e=>{e.preventDefault();schedule[selectedStudent]??={};schedule[selectedStudent][document.getElementById('dayInput').value]??=[];schedule[selectedStudent][document.getElementById('dayInput').value].push({time:document.getElementById('timeInput').value.trim(),subject:document.getElementById('classSubjectInput').value,room:document.getElementById('roomInput').value.trim()});localStorage.setItem(KEY+'_schedule',JSON.stringify(schedule));e.target.reset();renderSchedule();toast('เพิ่มคาบเรียนแล้ว ✓')});
 document.addEventListener('click',e=>{let b=e.target.closest('[data-del-class]');if(b){let a=schedule[selectedStudent]?.[selectedDay]||[];a.splice(Number(b.dataset.delClass),1);localStorage.setItem(KEY+'_schedule',JSON.stringify(schedule));renderSchedule();toast('ลบคาบเรียนแล้ว')}});
 
 document.getElementById('saveProfiles').addEventListener('click',()=>{profiles.นท.className=document.getElementById('classNt').value.trim()||'ยังไม่ระบุ';profiles.ไนท์.className=document.getElementById('classNight').value.trim()||'ยังไม่ระบุ';localStorage.setItem(KEY+'_profiles',JSON.stringify(profiles));render();toast('บันทึกข้อมูลนักเรียนแล้ว ✓')});
+
+
+document.getElementById('addSubjectBtn').addEventListener('click',()=>{
+ document.getElementById('addSubjectBox').classList.remove('hidden');
+ document.getElementById('newSubjectInput').focus();
+});
+document.getElementById('cancelSubjectBtn').addEventListener('click',()=>{
+ document.getElementById('addSubjectBox').classList.add('hidden');
+ document.getElementById('newSubjectInput').value='';
+});
+document.getElementById('subjectForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const name=document.getElementById('newSubjectInput').value.trim();
+ if(!name){toast('กรุณาระบุชื่อรายวิชา');return}
+ if(subjects.some(s=>s.toLowerCase()===name.toLowerCase())){toast('มีรายวิชานี้อยู่แล้ว');return}
+ subjects.push(name);saveSubjects();refreshSubjectSelects();renderSubjects();
+ document.getElementById('addSubjectBox').classList.add('hidden');
+ document.getElementById('newSubjectInput').value='';
+ toast('เพิ่มรายวิชา “'+name+'” แล้ว ✓');
+});
 
 document.getElementById('dueInput').value=new Date().toISOString().slice(0,10);document.getElementById('formTitle').textContent='➕ เพิ่มงานใหม่';document.getElementById('cancelEdit').classList.add('hidden')}
 function notifyCheck(){if(!('Notification'in window)||Notification.permission!=='granted')return;let todayKey=new Date().toISOString().slice(0,10);currentTasks().filter(t=>!t.done&&t.remind>=0&&daysLeft(t.due)===Number(t.remind)).forEach(t=>{let k='notice_'+t.id+'_'+todayKey;if(localStorage.getItem(k))return;try{new Notification('ติดตามงาน นท ไนท์',{body:`${t.subject}: ${t.name} • ส่ง ${fmt(t.due)}`});localStorage.setItem(k,'1')}catch(e){}})}
@@ -210,12 +254,32 @@ document.getElementById('sampleBtn').addEventListener('click',()=>{if(confirm('�
 document.getElementById('clearBtn').addEventListener('click',()=>{if(confirm('ต้องการลบงานทั้งหมดจริงหรือไม่?')){tasks=[];save();render();toast('ลบข้อมูลทั้งหมดแล้ว')}});
 document.querySelectorAll('#subjectInput option').forEach(o=>o.remove());subjects.forEach(s=>{let o=document.createElement('option');o.value=s;o.textContent=s;document.getElementById('subjectInput').appendChild(o)});
 
-document.querySelectorAll('#classSubjectInput option').forEach(o=>o.remove());subjects.forEach(s=>{let o=document.createElement('option');o.value=s;o.textContent=s;document.getElementById('classSubjectInput').appendChild(o)});
+refreshSubjectSelects();
 document.getElementById('dayFilter').addEventListener('click',e=>{let b=e.target.closest('[data-day]');if(!b)return;selectedDay=b.dataset.day;document.querySelectorAll('#dayFilter button').forEach(x=>x.classList.toggle('sel',x===b));renderSchedule()});
 document.getElementById('scheduleForm').addEventListener('submit',e=>{e.preventDefault();schedule[selectedStudent]??={};schedule[selectedStudent][document.getElementById('dayInput').value]??=[];schedule[selectedStudent][document.getElementById('dayInput').value].push({time:document.getElementById('timeInput').value.trim(),subject:document.getElementById('classSubjectInput').value,room:document.getElementById('roomInput').value.trim()});localStorage.setItem(KEY+'_schedule',JSON.stringify(schedule));e.target.reset();renderSchedule();toast('เพิ่มคาบเรียนแล้ว ✓')});
 document.addEventListener('click',e=>{let b=e.target.closest('[data-del-class]');if(b){let a=schedule[selectedStudent]?.[selectedDay]||[];a.splice(Number(b.dataset.delClass),1);localStorage.setItem(KEY+'_schedule',JSON.stringify(schedule));renderSchedule();toast('ลบคาบเรียนแล้ว')}});
 
 document.getElementById('saveProfiles').addEventListener('click',()=>{profiles.นท.className=document.getElementById('classNt').value.trim()||'ยังไม่ระบุ';profiles.ไนท์.className=document.getElementById('classNight').value.trim()||'ยังไม่ระบุ';localStorage.setItem(KEY+'_profiles',JSON.stringify(profiles));render();toast('บันทึกข้อมูลนักเรียนแล้ว ✓')});
+
+
+document.getElementById('addSubjectBtn').addEventListener('click',()=>{
+ document.getElementById('addSubjectBox').classList.remove('hidden');
+ document.getElementById('newSubjectInput').focus();
+});
+document.getElementById('cancelSubjectBtn').addEventListener('click',()=>{
+ document.getElementById('addSubjectBox').classList.add('hidden');
+ document.getElementById('newSubjectInput').value='';
+});
+document.getElementById('subjectForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const name=document.getElementById('newSubjectInput').value.trim();
+ if(!name){toast('กรุณาระบุชื่อรายวิชา');return}
+ if(subjects.some(s=>s.toLowerCase()===name.toLowerCase())){toast('มีรายวิชานี้อยู่แล้ว');return}
+ subjects.push(name);saveSubjects();refreshSubjectSelects();renderSubjects();
+ document.getElementById('addSubjectBox').classList.add('hidden');
+ document.getElementById('newSubjectInput').value='';
+ toast('เพิ่มรายวิชา “'+name+'” แล้ว ✓');
+});
 
 document.getElementById('dueInput').value=new Date().toISOString().slice(0,10);
 if('Notification'in window)document.getElementById('notifyState').textContent='สถานะ: '+(Notification.permission==='granted'?'เปิดใช้งานแล้ว 🔔':'ยังไม่ได้เปิด');

@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f3b67">
+<title>ติดตามงาน นท ไนท์</title>
+<style>
+:root{--navy:#0f3b67;--blue:#1769e0;--green:#18a673;--orange:#f59e0b;--red:#e5484d;--purple:#7c4dff;--bg:#f3f6fa;--card:#fff;--text:#172033;--muted:#667085;--line:#e2e8f0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.app{max-width:760px;margin:auto;min-height:100vh;padding-bottom:90px}
+header{background:linear-gradient(135deg,var(--navy),#1769a8);color:white;padding:20px 16px 24px;border-radius:0 0 28px 28px}
+.brand{display:flex;justify-content:space-between;align-items:center;gap:10px}.brand h1{font-size:23px;margin:0}.brand small{opacity:.82}.child{margin-top:15px;background:rgba(255,255,255,.12);padding:12px 14px;border-radius:16px;display:flex;justify-content:space-between;align-items:center}
+main{padding:14px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:-3px}.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 5px;text-align:center}.stat b{display:block;font-size:23px}.stat span{font-size:11px;color:var(--muted)}
+.progress{background:white;border:1px solid var(--line);border-radius:18px;padding:14px;margin:12px 0}.bar{height:9px;background:#e9eef5;border-radius:99px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:var(--green);border-radius:99px;transition:.25s}
+.nav{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:12px 0}.nav button{border:1px solid var(--line);background:white;border-radius:13px;padding:9px 3px;font-weight:800;color:var(--muted);font-size:12px}.nav button.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:16px 2px 9px}.section-title h2{font-size:18px;margin:0}.muted{color:var(--muted);font-size:13px}.card{background:white;border:1px solid var(--line);border-radius:18px;padding:13px;margin:9px 0}.task{display:flex;gap:10px;align-items:center}.icon{width:43px;height:43px;border-radius:13px;background:#eef4ff;display:grid;place-items:center;font-size:20px;flex:none}.grow{min-width:0;flex:1}.subject{font-size:12px;color:var(--muted);font-weight:800}.taskname{font-weight:850;margin-top:2px;word-break:break-word}.due{font-size:12px;margin-top:4px}.status{font-size:11px;font-weight:850;white-space:nowrap}.done{opacity:.65}.done .taskname{text-decoration:line-through}.ok{background:#e8f7ef;color:var(--green);border:0;border-radius:10px;padding:9px 10px;font-weight:800}.complete{background:var(--blue);color:#fff;border:0;border-radius:10px;padding:9px 10px;font-weight:800}.actions{display:flex;gap:6px;margin-top:9px;justify-content:flex-end}.small{border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 10px;font-size:12px;font-weight:800}.danger{color:var(--red)}
+.subject-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.subject-card{background:white;border:1px solid var(--line);border-radius:18px;padding:13px;text-align:left;width:100%}.subject-top{display:flex;gap:9px;align-items:center}.subject-card h3{font-size:14px;margin:0}.pct{margin-left:auto;font-weight:850}.mini{height:7px;background:#edf1f6;border-radius:99px;overflow:hidden;margin-top:10px}.mini i{display:block;height:100%;background:var(--green)}
+form,.panel{background:white;border:1px solid var(--line);border-radius:20px;padding:15px}.field{margin-bottom:12px}.field label{display:block;font-weight:800;font-size:13px;margin-bottom:5px}.field input,.field select,.field textarea{width:100%;padding:12px;border:1px solid #cfd8e3;border-radius:12px;background:#fff;font-size:16px}.field textarea{resize:vertical}.save{width:100%;padding:13px;border:0;border-radius:13px;background:var(--blue);color:white;font-weight:900}.hidden{display:none!important}.empty{text-align:center;color:var(--muted);padding:28px 10px}.filter{display:flex;gap:7px;overflow:auto;padding-bottom:3px}.filter button{border:1px solid var(--line);background:white;border-radius:20px;padding:8px 13px;white-space:nowrap}.filter button.sel{background:var(--navy);color:white}.search{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:13px;font-size:16px;background:white}.priority{font-size:11px;font-weight:900;border-radius:8px;padding:3px 7px;display:inline-block;margin-left:5px}.high{background:#ffe8e8;color:var(--red)}.normal{background:#edf4ff;color:var(--blue)}.low{background:#eef8f3;color:var(--green)}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(760px,100%);background:white;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:7px 7px calc(7px + env(safe-area-inset-bottom));z-index:10}.bottom button{border:0;background:transparent;color:var(--muted);padding:6px 2px;font-size:10px;font-weight:850}.bottom button b{display:block;font-size:18px}.bottom button.active{color:var(--blue)}
+.toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);background:#172033;color:white;padding:10px 14px;border-radius:12px;font-size:13px;display:none;z-index:20;max-width:90%;text-align:center}.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}.info{background:#f6f9fd;border-radius:14px;padding:12px}.info strong{display:block;font-size:20px}.notice{padding:12px;border-radius:14px;background:#fff7e6;color:#8a5a00;font-size:13px;margin:8px 0}
+@media(max-width:420px){.stats{grid-template-columns:repeat(2,1fr)}.subject-grid{grid-template-columns:1fr}.task .complete,.task .ok{padding:8px;font-size:12px}.nav button{font-size:11px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="brand"><div><h1>🎓 ติดตามงาน นท ไนท์</h1><small>School Task Tracker • V3</small></div><div style="font-size:28px">📚</div></div>
+ <div class="child">
+   <div><span>👨‍🎓 นักเรียน</span><small id="studentClass" style="display:block;opacity:.8;margin-top:2px"></small></div>
+   <select id="studentSelect" style="background:rgba(255,255,255,.14);color:white;border:1px solid rgba(255,255,255,.3);border-radius:10px;padding:8px 10px;font-weight:800">
+    <option value="นท">นท</option>
+    <option value="ไนท์">ไนท์</option>
+   </select>
+ </div>
+</header>
+<main>
+<div class="stats">
+ <div class="stat"><b id="all">0</b><span>📚 งานทั้งหมด</span></div><div class="stat"><b id="late">0</b><span>🔴 งานค้าง</span></div><div class="stat"><b id="soon">0</b><span>🟠 ใกล้ส่ง</span></div><div class="stat"><b id="done">0</b><span>🟢 เสร็จแล้ว</span></div>
+</div>
+<div class="progress"><div style="display:flex;justify-content:space-between"><strong>ความคืบหน้าการส่งงาน</strong><strong id="pct">0%</strong></div><div class="bar"><i id="bar"></i></div></div>
+<div class="nav">
+<button class="active" data-page="home">🏠<br>หน้าหลัก</button><button data-page="subjects">📚<br>รายวิชา</button><button data-page="calendar">🗓️<br>กำหนดส่ง</button><button data-page="timetable">🕐<br>ตารางเรียน</button><button data-page="add">➕<br>เพิ่มงาน</button>
+</div>
+
+<section id="home">
+ <div class="section-title"><h2>งานที่ต้องจัดการ</h2><span class="muted" id="todayText"></span></div>
+ <input id="search" class="search" placeholder="🔎 ค้นหาชื่องานหรือวิชา...">
+ <div class="filter" id="homeFilter" style="margin-top:8px"><button class="sel" data-filter="all">ทั้งหมด</button><button data-filter="open">ยังไม่เสร็จ</button><button data-filter="soon">ใกล้ส่ง</button><button data-filter="late">ค้าง</button></div>
+ <div class="section-title"><h2>⚡ วันนี้ต้องทำ</h2><span class="muted">งานที่ต้องรีบจัดการ</span></div>
+<div id="todayList"></div>
+<div id="homeList"></div>
+</section>
+
+<section id="subjects" class="hidden">
+ <div class="section-title"><h2>📚 รายวิชา</h2><span class="muted">กดวิชาเพื่อดูงาน</span></div>
+ <div id="subjectsList" class="subject-grid"></div><div id="subjectTasks"></div>
+</section>
+
+<section id="calendar" class="hidden">
+ <div class="section-title"><h2>🗓️ กำหนดส่ง</h2><span class="muted">ใกล้สุดก่อน</span></div><div id="calendarList"></div>
+</section>
+
+<section id="timetable" class="hidden">
+ <div class="section-title"><h2>🕐 ตารางเรียน</h2><span class="muted">ของ <span id="ttStudent">นท</span></span></div>
+ <div class="panel">
+  <div class="filter" id="dayFilter">
+   <button class="sel" data-day="จันทร์">จันทร์</button><button data-day="อังคาร">อังคาร</button><button data-day="พุธ">พุธ</button><button data-day="พฤหัสบดี">พฤหัสบดี</button><button data-day="ศุกร์">ศุกร์</button>
+  </div>
+  <div id="scheduleList" style="margin-top:10px"></div>
+ </div>
+ <div class="panel" style="margin-top:10px">
+  <h3 style="margin-top:0">➕ เพิ่มคาบเรียน</h3>
+  <form id="scheduleForm">
+   <div class="two"><div class="field"><label>วัน</label><select id="dayInput"><option>จันทร์</option><option>อังคาร</option><option>พุธ</option><option>พฤหัสบดี</option><option>ศุกร์</option></select></div>
+   <div class="field"><label>เวลา</label><input id="timeInput" placeholder="08:30-09:20" required></div></div>
+   <div class="field"><label>วิชา</label><select id="classSubjectInput"></select></div>
+   <div class="field"><label>ห้อง / ครู</label><input id="roomInput" placeholder="เช่น ห้อง 304 / ครูสมชาย"></div>
+   <button class="save">เพิ่มตารางเรียน</button>
+  </form>
+ </div>
+</section>
+<section id="add" class="hidden">
+ <div class="section-title"><h2 id="formTitle">➕ เพิ่มงานใหม่</h2></div>
+ <form id="form">
+  <div class="field"><label>วิชา *</label><select id="subjectInput"></select></div>
+  <div class="field"><label>ชื่องาน *</label><input id="nameInput" required maxlength="120" placeholder="เช่น แบบฝึกหัดบทที่ 6"></div>
+  <div class="field"><label>วันที่ต้องส่ง *</label><input id="dueInput" type="date" required></div>
+  <div class="field"><label>ความสำคัญ</label><select id="priorityInput"><option value="normal">ปกติ</option><option value="high">สำคัญมาก</option><option value="low">ไม่เร่งด่วน</option></select></div>
+  <div class="field"><label>รายละเอียด</label><textarea id="detailInput" rows="3" maxlength="500" placeholder="เช่น ทำหน้า 45-48 / ส่งใน Google Classroom"></textarea></div>
+  <div class="field"><label>เตือนล่วงหน้า</label><select id="remindInput"><option value="0">วันครบกำหนด</option><option value="1">1 วันก่อน</option><option value="3" selected>3 วันก่อน</option><option value="7">7 วันก่อน</option></select></div>
+  <div class="two"><button type="submit" class="save">💾 บันทึกงาน</button><button type="button" id="cancelEdit" class="small hidden">ยกเลิกแก้ไข</button></div>
+ </form>
+</section>
+
+<section id="settings" class="hidden">
+ <div class="section-title"><h2>⚙️ จัดการข้อมูล</h2></div>
+ <div class="panel">
+  <h3 style="margin-top:0">👨‍🎓 ข้อมูลนักเรียน</h3>
+  <div class="two">
+   <div class="info"><strong>นท</strong><span class="muted">นักเรียนคนที่ 1</span><div class="field" style="margin-top:8px"><label>ชั้นเรียน</label><input id="classNt" value="ม.3/12"></div></div>
+   <div class="info"><strong>ไนท์</strong><span class="muted">นักเรียนคนที่ 2</span><div class="field" style="margin-top:8px"><label>ชั้นเรียน</label><input id="classNight" value="ป.6/1"></div></div>
+  </div>
+  <button id="saveProfiles" class="save" style="margin-top:8px">💾 บันทึกข้อมูลนักเรียน</button>
+ </div>
+ <div class="panel" style="margin-top:10px">
+  <h3 style="margin-top:0">🔔 การแจ้งเตือน</h3>
+  <p class="muted">เปิดการแจ้งเตือนของเบราว์เซอร์ เพื่อให้ระบบลองแจ้งเตือนงานใกล้ครบกำหนดเมื่อเปิดเว็บ</p>
+  <button id="notifyBtn" class="save">🔔 เปิดการแจ้งเตือน</button>
+  <div id="notifyState" class="notice">สถานะ: ยังไม่ได้เปิด</div>
+  <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+  <h3>💾 สำรองข้อมูล</h3>
+  <div class="two"><button id="exportBtn" class="small">⬇️ Export JSON</button><label class="small" style="text-align:center;display:block">⬆️ Import JSON<input id="importInput" type="file" accept=".json" hidden></label></div>
+  <div style="margin-top:10px"><button id="sampleBtn" class="small">↩️ โหลดข้อมูลตัวอย่าง</button> <button id="clearBtn" class="small danger">🗑️ ลบข้อมูลทั้งหมด</button></div>
+ </div>
+ <div class="panel" style="margin-top:10px"><strong>V2 มีอะไรเพิ่ม?</strong><ul class="muted"><li>แก้ไขและลบงาน</li><li>ค้นหาและกรองงาน</li><li>ความสำคัญของงาน</li><li>สำรอง/นำเข้าข้อมูล</li><li>ศูนย์แจ้งเตือนในเครื่อง</li><li>จำข้อมูลในมือถือ</li></ul></div>
+</section>
+</main>
+<nav class="bottom">
+<button class="active" data-page="home"><b>🏠</b>หน้าหลัก</button><button data-page="subjects"><b>📚</b>รายวิชา</button><button data-page="calendar"><b>🗓️</b>กำหนดส่ง</button><button data-page="timetable"><b>🕐</b>ตารางเรียน</button><button data-page="settings"><b>⚙️</b>จัดการ</button>
+</nav>
+<div class="toast" id="toast"></div>
+</div>
+
+<script>
+(function(){
+const KEY='school_task_nt_night_v2';
+const subjects=['คณิตศาสตร์','ภาษาไทย','ภาษาอังกฤษ','วิทยาศาสตร์','ภาษาจีน','สังคมศึกษา','ศิลปะ','สุขศึกษา','การงานอาชีพ','คอมพิวเตอร์'];
+const icons={'คณิตศาสตร์':'🔢','ภาษาไทย':'📖','ภาษาอังกฤษ':'🔤','วิทยาศาสตร์':'🧪','ภาษาจีน':'中','สังคมศึกษา':'🌏','ศิลปะ':'🎨','สุขศึกษา':'❤️','การงานอาชีพ':'🛠️','คอมพิวเตอร์':'💻'};
+const sample=[
+{id:1,subject:'วิทยาศาสตร์',name:'รายงานระบบสุริยะ',due:'2026-09-18',done:false,priority:'high',detail:'จัดทำรายงานและเตรียมนำเสนอ',remind:1},
+{id:2,subject:'ภาษาจีน',name:'แบบฝึกหัดบทที่ 5',due:'2026-09-19',done:false,priority:'normal',detail:'ทำแบบฝึกหัดหน้า 45-48',remind:1},
+{id:3,subject:'คณิตศาสตร์',name:'แบบฝึกหัดบทที่ 6',due:'2026-09-21',done:false,priority:'normal',detail:'ส่งในคาบเรียน',remind:3},
+{id:4,subject:'ภาษาไทย',name:'เขียนเรียงความ',due:'2026-09-20',done:true,priority:'normal',detail:'เรียงความ 1 หน้า',remind:3},
+{id:5,subject:'ภาษาอังกฤษ',name:'Vocabulary Unit 4',due:'2026-09-25',done:false,priority:'low',detail:'ท่องศัพท์และทำแบบฝึกหัด',remind:3},
+{id:6,subject:'สังคมศึกษา',name:'สรุปเรื่องอาเซียน',due:'2026-09-16',done:false,priority:'high',detail:'ทำเป็นแผนผังความคิด',remind:0}
+];
+let tasks=[];try{tasks=JSON.parse(localStorage.getItem(KEY))||sample}catch(e){tasks=sample}
+tasks=tasks.map(t=>({...t,student:t.student||'นท'}));
+let selectedStudent='นท';
+let profiles={นท:{className:'ม.3/12'},ไนท์:{className:'ป.6/1'}};
+try{profiles=JSON.parse(localStorage.getItem(KEY+'_profiles'))||profiles}catch(e){}
+let schedule=JSON.parse(localStorage.getItem(KEY+'_schedule')||'null')||{
+ 'นท':{'จันทร์':[{time:'08:30-09:20',subject:'คณิตศาสตร์',room:'ห้อง 304'}]},
+ 'ไนท์':{'จันทร์':[{time:'08:30-09:20',subject:'ภาษาไทย',room:'ห้อง 201'}]}
+};
+let selectedDay='จันทร์';
+let selectedSubject=null,homeFilter='all',editingId=null;
+
+const today=()=>{let d=new Date();return new Date(d.getFullYear(),d.getMonth(),d.getDate())};
+const dateObj=s=>{let [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const daysLeft=s=>Math.round((dateObj(s)-today())/86400000);
+const fmt=s=>{let [y,m,d]=s.split('-');return `${d}/${m}/${y}`};
+const esc=x=>String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function save(){try{localStorage.setItem(KEY,JSON.stringify(tasks))}catch(e){}}
+function status(t){if(t.done)return ['เสร็จแล้ว','var(--green)'];let n=daysLeft(t.due);if(n<0)return [`เกินกำหนด ${Math.abs(n)} วัน`,'var(--red)'];if(n===0)return ['ต้องส่งวันนี้','var(--red)'];if(n===1)return ['เหลือ 1 วัน','var(--orange)'];if(n<=3)return [`เหลือ ${n} วัน`,'var(--orange)'];return [`เหลือ ${n} วัน`,'var(--blue)']}
+function priority(p){let map={high:['สำคัญมาก','high'],normal:['ปกติ','normal'],low:['ไม่เร่งด่วน','low']};return map[p]||map.normal}
+function taskHTML(t){
+ let [s,c]=status(t),[pt,pc]=priority(t.priority);
+ return `<div class="card ${t.done?'done':''}"><div class="task"><div class="icon">${icons[t.subject]||'📘'}</div><div class="grow"><div class="subject">${esc(t.subject)} <span class="priority ${pc}">${pt}</span></div><div class="taskname">${esc(t.name)}</div><div class="due" style="color:${c}">📅 ส่ง ${fmt(t.due)} · <span class="status">${s}</span></div>${t.detail?`<div class="muted" style="margin-top:4px">${esc(t.detail)}</div>`:''}</div>${t.done?'<button class="ok" type="button">✓ สำเร็จ</button>':`<button class="complete" type="button" data-done="${t.id}">✓ สำเร็จ</button>`}</div><div class="actions"><button type="button" class="small" data-edit="${t.id}">✏️ แก้ไข</button><button type="button" class="small danger" data-delete="${t.id}">🗑️ ลบ</button></div></div>`;
+}
+function currentTasks(){return tasks.filter(t=>t.student===selectedStudent)}
+function renderStats(){let list=currentTasks(),d=list.filter(t=>t.done).length,l=list.filter(t=>!t.done&&daysLeft(t.due)<0).length,s=list.filter(t=>!t.done&&daysLeft(t.due)>=0&&daysLeft(t.due)<=3).length,p=list.length?Math.round(d/list.length*100):0;document.getElementById('all').textContent=list.length;document.getElementById('done').textContent=d;document.getElementById('late').textContent=l;document.getElementById('soon').textContent=s;document.getElementById('pct').textContent=p+'%';document.getElementById('bar').style.width=p+'%'}
+function renderHome(){let q=document.getElementById('search').value.trim().toLowerCase(),list=[...currentTasks()].sort((a,b)=>a.due.localeCompare(b.due));if(homeFilter==='open')list=list.filter(t=>!t.done);if(homeFilter==='soon')list=list.filter(t=>!t.done&&daysLeft(t.due)>=0&&daysLeft(t.due)<=3);if(homeFilter==='late')list=list.filter(t=>!t.done&&daysLeft(t.due)<0);if(q)list=list.filter(t=>(t.name+' '+t.subject+' '+(t.detail||'')).toLowerCase().includes(q));document.getElementById('homeList').innerHTML=list.length?list.map(taskHTML).join(''):'<div class="empty">🎉 ไม่พบงาน</div>'}
+function renderSubjects(){let counts=subjects.map(s=>{let a=currentTasks().filter(t=>t.subject===s),d=a.filter(t=>t.done).length;return{s,a,d,p:a.length?Math.round(d/a.length*100):0}}).filter(x=>x.a.length);document.getElementById('subjectsList').innerHTML=counts.length?counts.map(x=>`<button type="button" class="subject-card" data-subject="${esc(x.s)}"><div class="subject-top"><span class="icon">${icons[x.s]}</span><div><h3>${esc(x.s)}</h3><div class="muted">${x.a.length} งาน · เสร็จ ${x.d}</div></div><span class="pct">${x.p}%</span></div><div class="mini"><i style="width:${x.p}%"></i></div></button>`).join(''):'<div class="empty">ยังไม่มีงาน</div>';let box=document.getElementById('subjectTasks');if(!selectedSubject){box.innerHTML='<div class="empty">เลือกวิชาเพื่อดูงานทั้งหมดของวิชานั้น</div>';return}let arr=currentTasks().filter(t=>t.subject===selectedSubject).sort((a,b)=>a.due.localeCompare(b.due));box.innerHTML=`<div class="section-title"><h2>${icons[selectedSubject]} ${esc(selectedSubject)}</h2><button type="button" class="small" data-clear-subject>ปิด</button></div>`+(arr.length?arr.map(taskHTML).join(''):'<div class="empty">ยังไม่มีงานวิชานี้</div>')}
+function renderCalendar(){let list=[...currentTasks()].sort((a,b)=>a.due.localeCompare(b.due));document.getElementById('calendarList').innerHTML=list.length?list.map(taskHTML).join(''):'<div class="empty">ยังไม่มีงาน</div>'}
+
+function renderToday(){
+ let list=currentTasks().filter(t=>!t.done && daysLeft(t.due)<=3).sort((a,b)=>a.due.localeCompare(b.due));
+ document.getElementById('todayList').innerHTML=list.length?list.slice(0,4).map(taskHTML).join(''):'<div class="empty" style="padding:16px">🎉 วันนี้ไม่มีงานเร่งด่วน</div>';
+}
+function renderSchedule(){
+ let arr=(schedule[selectedStudent]&&schedule[selectedStudent][selectedDay])||[];
+ document.getElementById('scheduleList').innerHTML=arr.length?arr.map((x,i)=>`<div class="card" style="margin:7px 0"><div style="display:flex;gap:10px;align-items:center"><div class="icon">📘</div><div class="grow"><strong>${esc(x.time)}</strong><div>${icons[x.subject]||'📚'} ${esc(x.subject)}</div><div class="muted">${esc(x.room||'')}</div></div><button type="button" class="small danger" data-del-class="${i}">ลบ</button></div></div>`).join(''):'<div class="empty">ยังไม่มีคาบเรียนวันนี้</div>';
+}
+
+function render(){renderStats();renderHome();renderSubjects();renderCalendar();renderToday();renderSchedule();document.getElementById('studentClass').textContent=profiles[selectedStudent].className;document.getElementById('ttStudent').textContent=selectedStudent+' • '+profiles[selectedStudent].className;document.getElementById('todayText').textContent=new Date().toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'numeric'})}
+function show(page){document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));document.getElementById(page).classList.remove('hidden');document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));window.scrollTo({top:0,behavior:'smooth'})}
+function toast(msg){let x=document.getElementById('toast');x.textContent=msg;x.style.display='block';clearTimeout(window.__toast);window.__toast=setTimeout(()=>x.style.display='none',2000)}
+function startEdit(id){let t=tasks.find(x=>x.id==id&&x.student===selectedStudent);if(!t)return;editingId=t.id;document.getElementById('subjectInput').value=t.subject;document.getElementById('nameInput').value=t.name;document.getElementById('dueInput').value=t.due;document.getElementById('priorityInput').value=t.priority||'normal';document.getElementById('detailInput').value=t.detail||'';document.getElementById('remindInput').value=String(t.remind??3);document.getElementById('formTitle').textContent='✏️ แก้ไขงาน';document.getElementById('cancelEdit').classList.remove('hidden');show('add')}
+function resetForm(){editingId=null;document.getElementById('form').reset();
+document.querySelectorAll('#classSubjectInput option').forEach(o=>o.remove());subjects.forEach(s=>{let o=document.createElement('option');o.value=s;o.textContent=s;document.getElementById('classSubjectInput').appendChild(o)});
+document.getElementById('dayFilter').addEventListener('click',e=>{let b=e.target.closest('[data-day]');if(!b)return;selectedDay=b.dataset.day;document.querySelectorAll('#dayFilter button').forEach(x=>x.classList.toggle('sel',x===b));renderSchedule()});
+document.getElementById('scheduleForm').addEventListener('submit',e=>{e.preventDefault();schedule[selectedStudent]??={};schedule[selectedStudent][document.getElementById('dayInput').value]??=[];schedule[selectedStudent][document.getElementById('dayInput').value].push({time:document.getElementById('timeInput').value.trim(),subject:document.getElementById('classSubjectInput').value,room:document.getElementById('roomInput').value.trim()});localStorage.setItem(KEY+'_schedule',JSON.stringify(schedule));e.target.reset();renderSchedule();toast('เพิ่มคาบเรียนแล้ว ✓')});
+document.addEventListener('click',e=>{let b=e.target.closest('[data-del-class]');if(b){let a=schedule[selectedStudent]?.[selectedDay]||[];a.splice(Number(b.dataset.delClass),1);localStorage.setItem(KEY+'_schedule',JSON.stringify(schedule));renderSchedule();toast('ลบคาบเรียนแล้ว')}});
+
+document.getElementById('saveProfiles').addEventListener('click',()=>{profiles.นท.className=document.getElementById('classNt').value.trim()||'ยังไม่ระบุ';profiles.ไนท์.className=document.getElementById('classNight').value.trim()||'ยังไม่ระบุ';localStorage.setItem(KEY+'_profiles',JSON.stringify(profiles));render();toast('บันทึกข้อมูลนักเรียนแล้ว ✓')});
+
+document.getElementById('dueInput').value=new Date().toISOString().slice(0,10);document.getElementById('formTitle').textContent='➕ เพิ่มงานใหม่';document.getElementById('cancelEdit').classList.add('hidden')}
+function notifyCheck(){if(!('Notification'in window)||Notification.permission!=='granted')return;let todayKey=new Date().toISOString().slice(0,10);currentTasks().filter(t=>!t.done&&t.remind>=0&&daysLeft(t.due)===Number(t.remind)).forEach(t=>{let k='notice_'+t.id+'_'+todayKey;if(localStorage.getItem(k))return;try{new Notification('ติดตามงาน นท ไนท์',{body:`${t.subject}: ${t.name} • ส่ง ${fmt(t.due)}`});localStorage.setItem(k,'1')}catch(e){}})}
+document.addEventListener('click',e=>{
+ let page=e.target.closest('[data-page]');if(page){show(page.dataset.page);return}
+ let d=e.target.closest('[data-done]');if(d){let t=tasks.find(x=>x.id==d.dataset.done&&x.student===selectedStudent);if(t){t.done=true;save();document.getElementById('classNt').value=profiles.นท.className;document.getElementById('classNight').value=profiles.ไนท์.className;render();notifyCheck();toast('✓ ทำงานสำเร็จแล้ว')}return}
+ let ed=e.target.closest('[data-edit]');if(ed){startEdit(ed.dataset.edit);return}
+ let del=e.target.closest('[data-delete]');if(del){let t=tasks.find(x=>x.id==del.dataset.delete&&x.student===selectedStudent);if(t&&confirm(`ลบงาน “${t.name}” ใช่หรือไม่?`)){tasks=tasks.filter(x=>x.id!=del.dataset.delete);save();render();toast('ลบงานแล้ว')}return}
+ let sf=e.target.closest('[data-filter]');if(sf){homeFilter=sf.dataset.filter;document.querySelectorAll('#homeFilter button').forEach(b=>b.classList.toggle('sel',b===sf));renderHome();return}
+ let sb=e.target.closest('[data-subject]');if(sb){selectedSubject=sb.dataset.subject;renderSubjects();return}
+ if(e.target.closest('[data-clear-subject]')){selectedSubject=null;renderSubjects()}
+});
+document.getElementById('studentSelect').addEventListener('change',e=>{
+ selectedStudent=e.target.value; selectedSubject=null; resetForm(); render(); toast('เปลี่ยนเป็นนักเรียน: '+selectedStudent);
+});
+document.getElementById('search').addEventListener('input',renderHome);
+document.getElementById('form').addEventListener('submit',e=>{e.preventDefault();let name=document.getElementById('nameInput').value.trim(),due=document.getElementById('dueInput').value;if(!name||!due)return;if(editingId){let t=tasks.find(x=>x.id===editingId);Object.assign(t,{student:selectedStudent,subject:document.getElementById('subjectInput').value,name,due,priority:document.getElementById('priorityInput').value,detail:document.getElementById('detailInput').value.trim(),remind:Number(document.getElementById('remindInput').value)});toast('แก้ไขงานเรียบร้อย ✓')}else{tasks.push({id:Date.now(),student:selectedStudent,subject:document.getElementById('subjectInput').value,name,due,done:false,priority:document.getElementById('priorityInput').value,detail:document.getElementById('detailInput').value.trim(),remind:Number(document.getElementById('remindInput').value)});toast('เพิ่มงานเรียบร้อย ✓')}save();render();resetForm();show('home')});
+document.getElementById('cancelEdit').addEventListener('click',()=>{resetForm();show('home')});
+document.getElementById('notifyBtn').addEventListener('click',async()=>{if(!('Notification'in window)){toast('เบราว์เซอร์นี้ไม่รองรับการแจ้งเตือน');return}try{let p=await Notification.requestPermission();document.getElementById('notifyState').textContent='สถานะ: '+(p==='granted'?'เปิดใช้งานแล้ว 🔔':'ยังไม่ได้รับอนุญาต');if(p==='granted'){notifyCheck();toast('เปิดการแจ้งเตือนแล้ว')}}catch(e){toast('ไม่สามารถเปิดการแจ้งเตือนได้') }});
+document.getElementById('exportBtn').addEventListener('click',()=>{let blob=new Blob([JSON.stringify(tasks,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='school-task-nt-night.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);toast('ส่งออกข้อมูลแล้ว')});
+document.getElementById('importInput').addEventListener('change',e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!Array.isArray(x))throw 0;tasks=x;save();render();toast('นำเข้าข้อมูลแล้ว ✓')}catch(err){toast('ไฟล์ไม่ถูกต้อง')}};r.readAsText(f)});
+document.getElementById('sampleBtn').addEventListener('click',()=>{if(confirm('โหลดข้อมูลตัวอย่างใหม่?')){tasks=[...sample.map(x=>({...x,student:'นท'})),...sample.map((x,i)=>({...x,id:x.id+100,student:'ไนท์'})).slice(0,4)];save();render();toast('โหลดข้อมูลตัวอย่างแล้ว')}});
+document.getElementById('clearBtn').addEventListener('click',()=>{if(confirm('ต้องการลบงานทั้งหมดจริงหรือไม่?')){tasks=[];save();render();toast('ลบข้อมูลทั้งหมดแล้ว')}});
+document.querySelectorAll('#subjectInput option').forEach(o=>o.remove());subjects.forEach(s=>{let o=document.createElement('option');o.value=s;o.textContent=s;document.getElementById('subjectInput').appendChild(o)});
+
+document.querySelectorAll('#classSubjectInput option').forEach(o=>o.remove());subjects.forEach(s=>{let o=document.createElement('option');o.value=s;o.textContent=s;document.getElementById('classSubjectInput').appendChild(o)});
+document.getElementById('dayFilter').addEventListener('click',e=>{let b=e.target.closest('[data-day]');if(!b)return;selectedDay=b.dataset.day;document.querySelectorAll('#dayFilter button').forEach(x=>x.classList.toggle('sel',x===b));renderSchedule()});
+document.getElementById('scheduleForm').addEventListener('submit',e=>{e.preventDefault();schedule[selectedStudent]??={};schedule[selectedStudent][document.getElementById('dayInput').value]??=[];schedule[selectedStudent][document.getElementById('dayInput').value].push({time:document.getElementById('timeInput').value.trim(),subject:document.getElementById('classSubjectInput').value,room:document.getElementById('roomInput').value.trim()});localStorage.setItem(KEY+'_schedule',JSON.stringify(schedule));e.target.reset();renderSchedule();toast('เพิ่มคาบเรียนแล้ว ✓')});
+document.addEventListener('click',e=>{let b=e.target.closest('[data-del-class]');if(b){let a=schedule[selectedStudent]?.[selectedDay]||[];a.splice(Number(b.dataset.delClass),1);localStorage.setItem(KEY+'_schedule',JSON.stringify(schedule));renderSchedule();toast('ลบคาบเรียนแล้ว')}});
+
+document.getElementById('saveProfiles').addEventListener('click',()=>{profiles.นท.className=document.getElementById('classNt').value.trim()||'ยังไม่ระบุ';profiles.ไนท์.className=document.getElementById('classNight').value.trim()||'ยังไม่ระบุ';localStorage.setItem(KEY+'_profiles',JSON.stringify(profiles));render();toast('บันทึกข้อมูลนักเรียนแล้ว ✓')});
+
+document.getElementById('dueInput').value=new Date().toISOString().slice(0,10);
+if('Notification'in window)document.getElementById('notifyState').textContent='สถานะ: '+(Notification.permission==='granted'?'เปิดใช้งานแล้ว 🔔':'ยังไม่ได้เปิด');
+document.getElementById('classNt').value=profiles.นท.className;document.getElementById('classNight').value=profiles.ไนท์.className;render();notifyCheck();
+})();
+</script>
+</body>
+</html>
